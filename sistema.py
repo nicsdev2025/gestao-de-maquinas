@@ -45,6 +45,7 @@ while delete_maquina == "s":
     deletar_maquina = input("Digite o ID para deletar a máquina: ")
     cursor.execute('DELETE FROM maquinas WHERE id = (%s)', (deletar_maquina))
     conexao.commit()
+    cursor.close()
     print(deletar_maquina)
     if delete_maquina != "s" and deletar_maquina == "n":
         break
