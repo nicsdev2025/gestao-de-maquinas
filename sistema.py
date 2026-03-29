@@ -11,14 +11,12 @@ def get_connection():
 conexao = get_connection()
 cursor = conexao.cursor()
 
-#comandos para o CREATE
+#comandos para insetir os dados na tabela CREATE
 maquina_usuario = input("digite seu RE:")
 maquina_patri = input("digite o patrimônio:")
 maquina_hostname = input("digite o HOSTNAME: ")
 maquina_dia = input("digite o dia (AAAA-MM-DD): ")
-
 cursor.execute("INSERT INTO maquinas (usuario, patrimonio, hostname, dia) VALUES (%s, %s, %s, %s)", (maquina_usuario, maquina_patri, maquina_hostname, maquina_dia))
-
 conexao.commit()
 
 
@@ -26,8 +24,30 @@ conexao.commit()
 cursor.execute("SELECT * FROM controle_maquinas.maquinas;")
 resultado = cursor.fetchall()
 print(resultado)
-cursor.close()
 
+# para atualizar os dados no banco
+atualizar_tabela = input("Deseja fazer alguma alteração? s/n: ")
+while atualizar_tabela == "s":
+    maquina_id = input("Digite o ID da máquina que deseja atualizar: ")
+    atualizar_usuario = input("Digite o nome do usuario: ")
+    atualizar_patri = input("Digite o novo patrimonio: ")
+    atualizar_hostname = input("Digite o novo hostname: ")
+    atualizar_dia = input("digite o dia (AAAA-MM-DD):")
+    cursor.execute('UPDATE maquinas SET usuario = (%s), patrimonio = (%s) hostname = (%s) = dia = (%s)', (atualizar_usuario, atualizar_patri, atualizar_hostname, atualizar_dia,maquina_dia))
+    conexao.commit()
+    print("Máquina atualizada com sucesso!")
+    if atualizar_tabela != "s" and atualizar_tabela == "n":
+        break
+   
+
+delete_maquina = input("Deseja deletar alguma máquina?")
+while delete_maquina == "s":
+    deletar_maquina = input("Digite o ID para deletar a máquina: ")
+    cursor.execute('DELETE FROM maquinas WHERE id = (%s)', (deletar_maquina))
+    conexao.commit()
+    print(deletar_maquina)
+    if delete_maquina != "s" and deletar_maquina == "n":
+        break
 verificacao = input("Você quer adicionar mais máquinas? s/n?: ")
 
 while verificacao == "s":
