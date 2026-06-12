@@ -3,16 +3,17 @@ import mysql.connector
 def get_connection():
     return mysql.connector.connect(
         host="localhost",
-        user="root",        
-        password="2911",        
+        password="2911",   
+        user="root",             
         database="controle_maquinas"
     )
 
 conexao = get_connection()
 cursor = conexao.cursor()
 
+
 #comandos para insetir os dados na tabela CREATE
-maquina_usuario = input("digite seu RE:")
+maquina_usuario = input("digite seu Nome/RE:")
 maquina_patri = input("digite o patrimônio:")
 maquina_hostname = input("digite o HOSTNAME: ")
 maquina_dia = input("digite o dia (AAAA-MM-DD): ")
@@ -25,7 +26,7 @@ cursor.execute("SELECT * FROM controle_maquinas.maquinas;")
 resultado = cursor.fetchall()
 print(resultado)
 
-# para atualizar os dados no banco
+# para atualizar os dados no banco 
 atualizar_tabela = input("Deseja fazer alguma alteração? s/n: ")
 while atualizar_tabela == "s":
     maquina_id = input("Digite o ID da máquina que deseja atualizar: ")
@@ -59,10 +60,13 @@ while verificacao == "s":
     maquina_patri = input("digite o patrimônio:")
     maquina_hostname = input("digite o HOSTNAME: ")
     maquina_dia = input("digite o dia (AAAA-MM-DD): ")
-    
+    cursor.execute("INSERT INTO maquinas (usuario, patrimonio, hostname, dia) VALUES (%s, %s, %s, %s)", (maquina_usuario, maquina_patri, maquina_hostname, maquina_dia))
+    conexao.commit()
+    cursor.close()
     verificacao = input("Você quer adicionar mais máquinas? s/n?: ")
 
     if verificacao == "n":
         break
     elif verificacao != "s" and verificacao != "n":
         input("ERRO: digite s/n: ")
+    break 
